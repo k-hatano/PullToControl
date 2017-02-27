@@ -14,6 +14,7 @@
 
 NSRect originalFrame;
 BOOL mousePressed = NO;
+CGFloat totalScroll = 0.0f;
 
 - (void)awakeFromNib {
     [self setOpaque:NO];
@@ -113,6 +114,20 @@ BOOL mousePressed = NO;
     }
 }
 
+- (void)scrollWheel:(NSEvent *)theEvent
+{
+    totalScroll += theEvent.deltaY;
+    NSLog(@"%f", totalScroll);
+    if (totalScroll > 20) {
+        [PullToControlWindow showPrevApp];
+        totalScroll -= 20;
+    }
+    if (totalScroll < -20) {
+        [PullToControlWindow showNextApp];
+        totalScroll += 20;
+    }
+}
+
 + (void)moveToLeftSpace {
     NSDictionary *asErrDic = nil;
     NSAppleScript *as = [ [ NSAppleScript alloc ]
@@ -153,6 +168,14 @@ BOOL mousePressed = NO;
     task.launchPath = @"/usr/bin/pmset";
     task.arguments = @[@"sleepnow"];
     [task launch];
+}
+
++ (void)showNextApp {
+    NSLog(@"showNextApp");
+}
+
++ (void)showPrevApp {
+    NSLog(@"showPrevApp");
 }
 
 @end
