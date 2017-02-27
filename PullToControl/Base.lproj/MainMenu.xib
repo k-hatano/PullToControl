@@ -678,7 +678,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="I9d-Ky-NZ6">
-                        <rect key="frame" x="-2" y="4" width="132" height="17"/>
+                        <rect key="frame" x="-2" y="12" width="132" height="17"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" id="BMg-qH-Uim">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -687,7 +687,7 @@
                     </textField>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="I9d-Ky-NZ6" secondAttribute="bottom" constant="4" id="uwI-ok-DHX"/>
+                    <constraint firstAttribute="bottom" secondItem="I9d-Ky-NZ6" secondAttribute="bottom" constant="8" id="uwI-ok-DHX"/>
                 </constraints>
                 <connections>
                     <outlet property="menu" destination="OoX-VU-5HF" id="CMF-dA-FhZ"/>
