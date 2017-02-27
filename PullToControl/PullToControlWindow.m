@@ -31,6 +31,7 @@ BOOL mousePressed = NO;
 
 - (void)mouseUp:(NSEvent *)theEvent {
     NSLog(@"mouseUp");
+    NSInteger x = theEvent.locationInWindow.x;
     NSInteger y = theEvent.locationInWindow.y + self.frame.origin.y;
     
     NSInteger displayHeight = [NSScreen mainScreen].frame.size.height;
@@ -39,7 +40,11 @@ BOOL mousePressed = NO;
     self.lLabel.stringValue = @"";
     mousePressed = NO;
     
-    if (y < 4) {
+    if (x < 0) {
+        [PullToControlWindow moveToRightSpace];
+    } else if (x > 128) {
+        [PullToControlWindow moveToLeftSpace];
+    } else if (y < 4) {
         [PullToControlWindow sleep];
     } else if (y < displayHeight / 3) {
         [PullToControlWindow showDashboard];
@@ -73,8 +78,13 @@ BOOL mousePressed = NO;
     
     [self setFrame:newFrame display:YES];
     
+    NSInteger x = theEvent.locationInWindow.x;
     NSInteger y = theEvent.locationInWindow.y + self.frame.origin.y;
-    if (y < 4) {
+    if (x < 0) {
+        self.lLabel.stringValue = @"Right space";
+    } else if (x > 128) {
+        self.lLabel.stringValue = @"Left space";
+    } else if (y < 4) {
         self.lLabel.stringValue = @"Sleep";
     } else if (y < displayHeight / 3) {
         self.lLabel.stringValue = @"Dashboard";
@@ -101,6 +111,20 @@ BOOL mousePressed = NO;
     if (!mousePressed) {
         [self setBackgroundColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.0]];
     }
+}
+
++ (void)moveToLeftSpace {
+    NSDictionary *asErrDic = nil;
+    NSAppleScript *as = [ [ NSAppleScript alloc ]
+                         initWithSource : @"tell application \"System Events\" to key code {123} using control down" ];
+    [ as executeAndReturnError : &asErrDic ];
+}
+
++ (void)moveToRightSpace {
+    NSDictionary *asErrDic = nil;
+    NSAppleScript *as = [ [ NSAppleScript alloc ]
+                         initWithSource : @"tell application \"System Events\" to key code {124} using control down" ];
+    [ as executeAndReturnError : &asErrDic ];
 }
 
 + (void)showMissionControl {

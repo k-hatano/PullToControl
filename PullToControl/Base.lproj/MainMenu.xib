@@ -669,6 +669,7 @@
         </menu>
         <window title="PullToControl" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" hasShadow="NO" releasedWhenClosed="NO" showsToolbarButton="NO" animationBehavior="default" id="QvC-M9-y7g" customClass="PullToControlWindow">
             <windowStyleMask key="styleMask" closable="YES"/>
+            <windowCollectionBehavior key="collectionBehavior" canJoinAllSpaces="YES"/>
             <windowPositionMask key="initialPositionMask" topStrut="YES"/>
             <rect key="contentRect" x="803" y="2000" width="128" height="8"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
