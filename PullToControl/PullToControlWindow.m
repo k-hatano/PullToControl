@@ -171,11 +171,17 @@ CGFloat totalScroll = 0.0f;
 }
 
 + (void)showNextApp {
-    NSLog(@"showNextApp");
+    NSDictionary *asErrDic = nil;
+    NSAppleScript *as = [ [ NSAppleScript alloc ]
+                         initWithSource : @"tell application \"System Events\" to keystroke tab using {command down}" ];
+    [ as executeAndReturnError : &asErrDic ];
 }
 
 + (void)showPrevApp {
-    NSLog(@"showPrevApp");
+    NSDictionary *asErrDic = nil;
+    NSAppleScript *as = [ [ NSAppleScript alloc ]
+                         initWithSource : @"tell application \"System Events\" to keystroke tab using {command down, shift down}" ];
+    [ as executeAndReturnError : &asErrDic ];
 }
 
 @end
