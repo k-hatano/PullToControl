@@ -171,17 +171,67 @@ CGFloat totalScroll = 0.0f;
 }
 
 + (void)showNextApp {
-    NSDictionary *asErrDic = nil;
-    NSAppleScript *as = [ [ NSAppleScript alloc ]
-                         initWithSource : @"tell application \"System Events\" to keystroke tab using {command down}" ];
-    [ as executeAndReturnError : &asErrDic ];
+    NSArray *apps = [[NSWorkspace sharedWorkspace] runningApplications];
+    NSMutableArray *appsFiltered = [[NSMutableArray alloc] init];
+    for (NSRunningApplication *app in apps) {
+        if (app.activationPolicy != NSApplicationActivationPolicyRegular){
+            continue;
+        }
+        [appsFiltered addObject:app];
+    }
+    
+    [appsFiltered sortUsingComparator:^NSComparisonResult(NSRunningApplication *app1, NSRunningApplication *app2) {
+        return [[app1 localizedName] compare:[app2 localizedName]];
+    }];
+    
+    NSInteger appIndex = 0;
+    NSInteger i = 0;
+    for (NSRunningApplication *app in appsFiltered) {
+        if (app.isActive) {
+            appIndex = i;
+            break;
+        }
+        i++;
+    }
+    
+    appIndex++;
+    if (appIndex >= [appsFiltered count]) {
+        appIndex = 0;
+    }
+    
+    [(NSRunningApplication *)[appsFiltered objectAtIndex:appIndex] activateWithOptions:NSApplicationActivateIgnoringOtherApps];
 }
 
 + (void)showPrevApp {
-    NSDictionary *asErrDic = nil;
-    NSAppleScript *as = [ [ NSAppleScript alloc ]
-                         initWithSource : @"tell application \"System Events\" to keystroke tab using {command down, shift down}" ];
-    [ as executeAndReturnError : &asErrDic ];
+    NSArray *apps = [[NSWorkspace sharedWorkspace] runningApplications];
+    NSMutableArray *appsFiltered = [[NSMutableArray alloc] init];
+    for (NSRunningApplication *app in apps) {
+        if (app.activationPolicy != NSApplicationActivationPolicyRegular){
+            continue;
+        }
+        [appsFiltered addObject:app];
+    }
+    
+    [appsFiltered sortUsingComparator:^NSComparisonResult(NSRunningApplication *app1, NSRunningApplication *app2) {
+        return [[app1 localizedName] compare:[app2 localizedName]];
+    }];
+    
+    NSInteger appIndex = 0;
+    NSInteger i = 0;
+    for (NSRunningApplication *app in appsFiltered) {
+        if (app.isActive) {
+            appIndex = i;
+            break;
+        }
+        i++;
+    }
+    
+    appIndex--;
+    if (appIndex < 0) {
+        appIndex += [appsFiltered count];
+    }
+    
+    [(NSRunningApplication *)[appsFiltered objectAtIndex:appIndex] activateWithOptions:NSApplicationActivateIgnoringOtherApps];
 }
 
 @end
