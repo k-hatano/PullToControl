@@ -17,6 +17,11 @@ BOOL mousePressed = NO;
 CGFloat totalScroll = 0.0f;
 
 - (void)awakeFromNib {
+    self.wSubWindow.level = NSPopUpMenuWindowLevel;
+    self.wSubWindow.opaque = NO;
+    [self.wSubWindow setBackgroundColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.5]];
+    self.wSubWindow.hidesOnDeactivate = NO;
+    
     [self setOpaque:NO];
     [self setBackgroundColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.5]];
     
@@ -26,6 +31,7 @@ CGFloat totalScroll = 0.0f;
 
 - (void)mouseDown:(NSEvent *)theEvent {
     NSLog(@"mouseDown");
+    [self.wSubWindow close];
     originalFrame = self.frame;
     mousePressed = YES;
 }
@@ -111,6 +117,7 @@ CGFloat totalScroll = 0.0f;
     NSLog(@"mouseExited");
     if (!mousePressed) {
         [self setBackgroundColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.0]];
+        [self.wSubWindow close];
     }
 }
 
@@ -119,10 +126,14 @@ CGFloat totalScroll = 0.0f;
     totalScroll += theEvent.deltaY;
     NSLog(@"%f", totalScroll);
     if (totalScroll > 20) {
+        self.wSubWindow.hidesOnDeactivate = NO;
+        [self.wSubWindow makeKeyAndOrderFront:self];
         [PullToControlWindow showPrevApp];
         totalScroll -= 20;
     }
     if (totalScroll < -20) {
+        self.wSubWindow.hidesOnDeactivate = NO;
+        [self.wSubWindow makeKeyAndOrderFront:self];
         [PullToControlWindow showNextApp];
         totalScroll += 20;
     }

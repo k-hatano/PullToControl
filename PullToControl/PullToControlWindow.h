@@ -11,6 +11,7 @@
 @interface PullToControlWindow : NSWindow <NSWindowDelegate>
 
 @property (weak) IBOutlet NSTextField *lLabel;
+@property (weak) IBOutlet NSWindow *wSubWindow;
 
 + (void)showMissionControl;
 + (void)showDashboard;
