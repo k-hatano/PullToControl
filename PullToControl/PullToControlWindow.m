@@ -128,13 +128,13 @@ CGFloat totalScroll = 0.0f;
     if (totalScroll > 20) {
         self.wSubWindow.hidesOnDeactivate = NO;
         [self.wSubWindow makeKeyAndOrderFront:self];
-        [PullToControlWindow showPrevApp];
+        [self showPrevApp];
         totalScroll -= 20;
     }
     if (totalScroll < -20) {
         self.wSubWindow.hidesOnDeactivate = NO;
         [self.wSubWindow makeKeyAndOrderFront:self];
-        [PullToControlWindow showNextApp];
+        [self showNextApp];
         totalScroll += 20;
     }
 }
@@ -181,7 +181,7 @@ CGFloat totalScroll = 0.0f;
     [task launch];
 }
 
-+ (void)showNextApp {
+- (void)showNextApp {
     NSArray *apps = [[NSWorkspace sharedWorkspace] runningApplications];
     NSMutableArray *appsFiltered = [[NSMutableArray alloc] init];
     for (NSRunningApplication *app in apps) {
@@ -211,9 +211,19 @@ CGFloat totalScroll = 0.0f;
     }
     
     [(NSRunningApplication *)[appsFiltered objectAtIndex:appIndex] activateWithOptions:NSApplicationActivateIgnoringOtherApps];
+    
+    self.lAppCurrent.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:appIndex] localizedName];
+    self.lAppBefore1.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex - 1 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
+    self.lAppBefore2.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex - 2 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
+    self.lAppBefore3.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex - 3 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
+    self.lAppBefore4.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex - 4 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
+    self.lAppAfter1.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex + 1 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
+    self.lAppAfter2.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex + 2 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
+    self.lAppAfter3.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex + 3 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
+    self.lAppAfter4.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex + 4 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
 }
 
-+ (void)showPrevApp {
+- (void)showPrevApp {
     NSArray *apps = [[NSWorkspace sharedWorkspace] runningApplications];
     NSMutableArray *appsFiltered = [[NSMutableArray alloc] init];
     for (NSRunningApplication *app in apps) {
@@ -243,6 +253,16 @@ CGFloat totalScroll = 0.0f;
     }
     
     [(NSRunningApplication *)[appsFiltered objectAtIndex:appIndex] activateWithOptions:NSApplicationActivateIgnoringOtherApps];
+    
+    self.lAppCurrent.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:appIndex] localizedName];
+    self.lAppBefore1.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex - 1 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
+    self.lAppBefore2.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex - 2 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
+    self.lAppBefore3.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex - 3 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
+    self.lAppBefore4.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex - 4 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
+    self.lAppAfter1.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex + 1 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
+    self.lAppAfter2.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex + 2 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
+    self.lAppAfter3.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex + 3 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
+    self.lAppAfter4.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex + 4 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
 }
 
 @end
