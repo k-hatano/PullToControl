@@ -125,17 +125,17 @@ CGFloat totalScroll = 0.0f;
 {
     totalScroll += theEvent.deltaY;
     NSLog(@"%f", totalScroll);
-    if (totalScroll > 20) {
+    if (totalScroll > 14) {
         self.wSubWindow.hidesOnDeactivate = NO;
         [self.wSubWindow makeKeyAndOrderFront:self];
         [self showPrevApp];
-        totalScroll -= 20;
+        totalScroll -= 14;
     }
-    if (totalScroll < -20) {
+    if (totalScroll < 14) {
         self.wSubWindow.hidesOnDeactivate = NO;
         [self.wSubWindow makeKeyAndOrderFront:self];
         [self showNextApp];
-        totalScroll += 20;
+        totalScroll += 14;
     }
 }
 
