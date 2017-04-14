@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface PullToControlWindow : NSWindow <NSWindowDelegate>
+@interface PullToControlWindow : NSWindow <NSWindowDelegate, NSDraggingDestination>
 
 @property (weak) IBOutlet NSTextField *lLabel;
 @property (weak) IBOutlet NSWindow *wSubWindow;

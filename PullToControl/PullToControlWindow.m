@@ -27,6 +27,9 @@ CGFloat totalScroll = 0.0f;
     
     NSTrackingArea *area = [[NSTrackingArea alloc] initWithRect:[self.contentView frame] options:NSTrackingMouseEnteredAndExited | NSTrackingInVisibleRect | NSTrackingActiveAlways owner:self userInfo:nil];
     [self.contentView addTrackingArea:area];
+    
+    NSArray *parrTypes = [NSArray arrayWithObject:NSFilenamesPboardType];
+    [self registerForDraggedTypes:parrTypes];
 }
 
 - (void)mouseDown:(NSEvent *)theEvent {
@@ -263,6 +266,28 @@ CGFloat totalScroll = 0.0f;
     self.lAppAfter2.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex + 2 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
     self.lAppAfter3.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex + 3 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
     self.lAppAfter4.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex + 4 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
+}
+
+#pragma mark NSDraggingDestination
+
+- (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender {
+    NSLog(@"draggingEntered : %@", [sender description]);
+    
+    return NSDragOperationGeneric;
+}
+
+- (void)draggingEnded:(id <NSDraggingInfo>)sender {
+    NSLog(@"draggingEnded : %@", [sender description]);
+    
+    NSPasteboard *poPasteBd = [sender draggingPasteboard];
+    NSArray *parrFiles = [poPasteBd propertyListForType:NSFilenamesPboardType];
+    NSLog(@"parrFiles : %@", [parrFiles description]);
+    
+}
+
+- (void)draggingExited:(id <NSDraggingInfo>)sender {
+    NSLog(@"draggingExited : %@", [sender description]);
+    
 }
 
 @end
