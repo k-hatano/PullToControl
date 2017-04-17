@@ -41,6 +41,13 @@ NSInteger appIndex = 0;
     mousePressed = YES;
 }
 
+- (void)otherMouseDown:(NSEvent *)theEvent {
+    NSLog(@"middleClick");
+    self.wSubWindow.hidesOnDeactivate = NO;
+    [self.wSubWindow makeKeyAndOrderFront:self];
+    [self showNextApp];
+}
+
 - (void)mouseUp:(NSEvent *)theEvent {
     NSLog(@"mouseUp");
     NSInteger x = theEvent.locationInWindow.x;
