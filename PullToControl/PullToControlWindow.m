@@ -15,6 +15,8 @@
 NSRect originalFrame;
 BOOL mousePressed = NO;
 CGFloat totalScroll = 0.0f;
+NSMutableArray *appsFiltered;
+NSInteger appIndex = 0;
 
 - (void)awakeFromNib {
     self.wSubWindow.level = NSPopUpMenuWindowLevel;
@@ -111,6 +113,7 @@ CGFloat totalScroll = 0.0f;
 
 - (void)mouseEntered:(NSEvent *)theEvent {
     NSLog(@"mouseEntered");
+    [self searchCurrentIndex];
     if (!mousePressed) {
         [self setBackgroundColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.5]];
     }
@@ -128,17 +131,17 @@ CGFloat totalScroll = 0.0f;
 {
     totalScroll += theEvent.deltaY;
     NSLog(@"%f", totalScroll);
-    if (totalScroll > 14) {
+    if (totalScroll > 12) {
         self.wSubWindow.hidesOnDeactivate = NO;
         [self.wSubWindow makeKeyAndOrderFront:self];
         [self showPrevApp];
-        totalScroll -= 14;
+        totalScroll -= 12;
     }
-    if (totalScroll < 14) {
+    if (totalScroll < -12) {
         self.wSubWindow.hidesOnDeactivate = NO;
         [self.wSubWindow makeKeyAndOrderFront:self];
         [self showNextApp];
-        totalScroll += 14;
+        totalScroll += 12;
     }
 }
 
@@ -184,9 +187,9 @@ CGFloat totalScroll = 0.0f;
     [task launch];
 }
 
-- (void)showNextApp {
+- (void)searchCurrentIndex {
     NSArray *apps = [[NSWorkspace sharedWorkspace] runningApplications];
-    NSMutableArray *appsFiltered = [[NSMutableArray alloc] init];
+    appsFiltered = [[NSMutableArray alloc] init];
     for (NSRunningApplication *app in apps) {
         if (app.activationPolicy != NSApplicationActivationPolicyRegular){
             continue;
@@ -198,7 +201,7 @@ CGFloat totalScroll = 0.0f;
         return [[app1 localizedName] compare:[app2 localizedName]];
     }];
     
-    NSInteger appIndex = 0;
+    appIndex = 0;
     NSInteger i = 0;
     for (NSRunningApplication *app in appsFiltered) {
         if (app.isActive) {
@@ -207,7 +210,10 @@ CGFloat totalScroll = 0.0f;
         }
         i++;
     }
-    
+}
+
+- (void)showNextApp {
+    NSLog(@"showNextApp");
     appIndex++;
     if (appIndex >= [appsFiltered count]) {
         appIndex = 0;
@@ -227,29 +233,7 @@ CGFloat totalScroll = 0.0f;
 }
 
 - (void)showPrevApp {
-    NSArray *apps = [[NSWorkspace sharedWorkspace] runningApplications];
-    NSMutableArray *appsFiltered = [[NSMutableArray alloc] init];
-    for (NSRunningApplication *app in apps) {
-        if (app.activationPolicy != NSApplicationActivationPolicyRegular){
-            continue;
-        }
-        [appsFiltered addObject:app];
-    }
-    
-    [appsFiltered sortUsingComparator:^NSComparisonResult(NSRunningApplication *app1, NSRunningApplication *app2) {
-        return [[app1 localizedName] compare:[app2 localizedName]];
-    }];
-    
-    NSInteger appIndex = 0;
-    NSInteger i = 0;
-    for (NSRunningApplication *app in appsFiltered) {
-        if (app.isActive) {
-            appIndex = i;
-            break;
-        }
-        i++;
-    }
-    
+    NSLog(@"showPrevApp");
     appIndex--;
     if (appIndex < 0) {
         appIndex += [appsFiltered count];
