@@ -30,7 +30,7 @@ NSInteger appIndex = 0;
     NSTrackingArea *area = [[NSTrackingArea alloc] initWithRect:[self.contentView frame] options:NSTrackingMouseEnteredAndExited | NSTrackingInVisibleRect | NSTrackingActiveAlways owner:self userInfo:nil];
     [self.contentView addTrackingArea:area];
     
-    NSArray *parrTypes = [NSArray arrayWithObject:NSFilenamesPboardType];
+    NSArray *parrTypes = [NSArray arrayWithObjects:NSFilenamesPboardType, NSStringPboardType, nil];
     [self registerForDraggedTypes:parrTypes];
 }
 
@@ -59,12 +59,12 @@ NSInteger appIndex = 0;
     self.lLabel.stringValue = @"";
     mousePressed = NO;
     
-    if (x < 0) {
+    if (y < 4) {
+        [PullToControlWindow sleep];
+    } else if (x < 0) {
         [PullToControlWindow moveToRightSpace];
     } else if (x > 128) {
         [PullToControlWindow moveToLeftSpace];
-    } else if (y < 4) {
-        [PullToControlWindow sleep];
     } else if (y < displayHeight / 3) {
         [PullToControlWindow showDashboard];
     } else if (y < displayHeight * 2 / 3) {
@@ -99,12 +99,12 @@ NSInteger appIndex = 0;
     
     NSInteger x = theEvent.locationInWindow.x;
     NSInteger y = theEvent.locationInWindow.y + self.frame.origin.y;
-    if (x < 0) {
+    if (y < 4) {
+        self.lLabel.stringValue = @"Sleep";
+    } else if (x < 0) {
         self.lLabel.stringValue = @"Right space";
     } else if (x > 128) {
         self.lLabel.stringValue = @"Left space";
-    } else if (y < 4) {
-        self.lLabel.stringValue = @"Sleep";
     } else if (y < displayHeight / 3) {
         self.lLabel.stringValue = @"Dashboard";
     } else if (y < displayHeight * 2 / 3) {
