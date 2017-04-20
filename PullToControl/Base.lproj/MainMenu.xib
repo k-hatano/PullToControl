@@ -705,12 +705,21 @@
                 <outlet property="lAppBefore4" destination="Xqz-lm-XBO" id="RBK-dw-uMF"/>
                 <outlet property="lAppCurrent" destination="jjg-s0-CRH" id="l2i-Cz-39Z"/>
                 <outlet property="lLabel" destination="I9d-Ky-NZ6" id="qBx-ik-Jxm"/>
+                <outlet property="miFileName" destination="QSk-p0-BbM" id="BoD-RM-N0z"/>
+                <outlet property="miSeparator" destination="lZZ-af-YvF" id="YGK-LE-cbu"/>
                 <outlet property="wSubWindow" destination="hGV-vU-s9w" id="fPK-iD-jIk"/>
             </connections>
             <point key="canvasLocation" x="284" y="199"/>
         </window>
         <menu id="OoX-VU-5HF">
             <items>
+                <menuItem title="Item" hidden="YES" id="QSk-p0-BbM">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="fileNameSelected:" target="QvC-M9-y7g" id="QXD-j4-n9p"/>
+                    </connections>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" hidden="YES" id="lZZ-af-YvF"/>
                 <menuItem title="Mission Control" id="h3l-aN-OMu">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
@@ -743,6 +752,7 @@
                     </connections>
                 </menuItem>
             </items>
+            <point key="canvasLocation" x="170" y="332.5"/>
         </menu>
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" hidesOnDeactivate="YES" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="hGV-vU-s9w">
             <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES" texturedBackground="YES"/>

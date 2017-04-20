@@ -30,7 +30,7 @@ NSInteger appIndex = 0;
     NSTrackingArea *area = [[NSTrackingArea alloc] initWithRect:[self.contentView frame] options:NSTrackingMouseEnteredAndExited | NSTrackingInVisibleRect | NSTrackingActiveAlways owner:self userInfo:nil];
     [self.contentView addTrackingArea:area];
     
-    NSArray *parrTypes = [NSArray arrayWithObjects:NSFilenamesPboardType, NSStringPboardType, nil];
+    NSArray *parrTypes = [NSArray arrayWithObjects:NSFilenamesPboardType, nil];
     [self registerForDraggedTypes:parrTypes];
 }
 
@@ -259,10 +259,17 @@ NSInteger appIndex = 0;
     self.lAppAfter4.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex + 4 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
 }
 
+- (IBAction)fileNameSelected:(id)sender {
+    [[NSWorkspace sharedWorkspace] openFile:self.filePath];
+}
+
 #pragma mark NSDraggingDestination
+
+BOOL mouseWithin = NO;
 
 - (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender {
     NSLog(@"draggingEntered : %@", [sender description]);
+    mouseWithin = YES;
     
     return NSDragOperationGeneric;
 }
@@ -274,9 +281,18 @@ NSInteger appIndex = 0;
     NSArray *parrFiles = [poPasteBd propertyListForType:NSFilenamesPboardType];
     NSLog(@"parrFiles : %@", [parrFiles description]);
     
+    if (mouseWithin) {
+        self.filePath = parrFiles[0];
+        self.miFileName.title = [parrFiles[0] lastPathComponent];
+        self.miFileName.hidden = NO;
+        self.miSeparator.hidden = NO;
+    }
+    mouseWithin = NO;
+    
 }
 
 - (void)draggingExited:(id <NSDraggingInfo>)sender {
+    mouseWithin = NO;
     NSLog(@"draggingExited : %@", [sender description]);
     
 }
