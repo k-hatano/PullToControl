@@ -173,6 +173,20 @@ NSInteger appIndex = 0;
     [task launch];
 }
 
++ (void)showApplicationWindows {
+    NSTask *task = [[NSTask alloc] init];
+    task.launchPath = @"/usr/bin/open";
+    task.arguments = @[@"-a", @"mission control", @"--args", @"2"];
+    [task launch];
+}
+
++ (void)showDesktop {
+    NSTask *task = [[NSTask alloc] init];
+    task.launchPath = @"/usr/bin/open";
+    task.arguments = @[@"-a", @"mission control", @"--args", @"1"];
+    [task launch];
+}
+
 + (void)showDashboard {
     NSTask *task = [[NSTask alloc] init];
     task.launchPath = @"/usr/bin/open";

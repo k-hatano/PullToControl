@@ -33,6 +33,14 @@
     [PullToControlWindow showMissionControl];
 }
 
+- (IBAction)showApplicationWidows:(id)sender {
+    [PullToControlWindow showApplicationWindows];
+}
+
+- (IBAction)showDesktop:(id)sender {
+    [PullToControlWindow showDesktop];
+}
+
 - (IBAction)showDashboard:(id)sender {
     [PullToControlWindow showDashboard];
 }

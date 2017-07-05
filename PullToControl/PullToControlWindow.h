@@ -31,6 +31,8 @@
 - (IBAction)fileNameSelected:(id)sender;
 
 + (void)showMissionControl;
++ (void)showApplicationWindows;
++ (void)showDesktop;
 + (void)showDashboard;
 + (void)showLaunchpad;
 + (void)sleep;
