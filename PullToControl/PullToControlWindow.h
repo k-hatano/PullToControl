@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface PullToControlWindow : NSWindow <NSWindowDelegate, NSDraggingDestination>
+@interface PullToControlWindow : NSWindow <NSWindowDelegate, NSDraggingDestination, NSTableViewDelegate, NSTableViewDataSource>
 
 @property (strong) NSString *filePath;
 
@@ -18,15 +18,9 @@
 @property (weak) IBOutlet NSMenuItem *miFileName;
 @property (weak) IBOutlet NSMenuItem *miSeparator;
 
-@property (weak) IBOutlet NSTextField *lAppCurrent;
-@property (weak) IBOutlet NSTextField *lAppBefore1;
-@property (weak) IBOutlet NSTextField *lAppBefore2;
-@property (weak) IBOutlet NSTextField *lAppBefore3;
-@property (weak) IBOutlet NSTextField *lAppBefore4;
-@property (weak) IBOutlet NSTextField *lAppAfter1;
-@property (weak) IBOutlet NSTextField *lAppAfter2;
-@property (weak) IBOutlet NSTextField *lAppAfter3;
-@property (weak) IBOutlet NSTextField *lAppAfter4;
+@property (weak) IBOutlet NSTableView *tvApplications;
+
+@property (weak) IBOutlet NSArrayController *acArrayController;
 
 - (IBAction)fileNameSelected:(id)sender;
 

@@ -231,6 +231,14 @@ NSInteger appIndex = 0;
         }
         i++;
     }
+    
+    [self reloadApplicationsTableView];
+    
+    NSRect newRect = self.wSubWindow.frame;
+    NSInteger originalHeight = newRect.size.height;
+    newRect.size.height = [appsFiltered count] * 24;
+    newRect.origin.y = newRect.origin.y - (newRect.size.height - originalHeight);
+    [self.wSubWindow setFrame:newRect display:!self.tvApplications.isHidden];
 }
 
 - (void)showNextApp {
@@ -241,16 +249,7 @@ NSInteger appIndex = 0;
     }
     
     [(NSRunningApplication *)[appsFiltered objectAtIndex:appIndex] activateWithOptions:NSApplicationActivateIgnoringOtherApps];
-    
-    self.lAppCurrent.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:appIndex] localizedName];
-    self.lAppBefore1.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex - 1 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
-    self.lAppBefore2.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex - 2 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
-    self.lAppBefore3.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex - 3 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
-    self.lAppBefore4.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex - 4 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
-    self.lAppAfter1.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex + 1 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
-    self.lAppAfter2.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex + 2 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
-    self.lAppAfter3.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex + 3 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
-    self.lAppAfter4.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex + 4 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
+    [self reloadApplicationsTableView];
 }
 
 - (void)showPrevApp {
@@ -261,20 +260,29 @@ NSInteger appIndex = 0;
     }
     
     [(NSRunningApplication *)[appsFiltered objectAtIndex:appIndex] activateWithOptions:NSApplicationActivateIgnoringOtherApps];
-    
-    self.lAppCurrent.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:appIndex] localizedName];
-    self.lAppBefore1.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex - 1 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
-    self.lAppBefore2.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex - 2 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
-    self.lAppBefore3.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex - 3 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
-    self.lAppBefore4.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex - 4 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
-    self.lAppAfter1.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex + 1 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
-    self.lAppAfter2.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex + 2 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
-    self.lAppAfter3.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex + 3 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
-    self.lAppAfter4.stringValue = [(NSRunningApplication *)[appsFiltered objectAtIndex:(appIndex + 4 + [appsFiltered count] * 4) % [appsFiltered count]] localizedName];
+    [self reloadApplicationsTableView];
 }
 
 - (IBAction)fileNameSelected:(id)sender {
     [[NSWorkspace sharedWorkspace] openFile:self.filePath];
+}
+
+- (void)reloadApplicationsTableView {
+    while ([self.acArrayController.arrangedObjects count] > 0) {
+        [self.acArrayController removeObjectAtArrangedObjectIndex:0];
+    }
+    
+    NSInteger index = 0;
+    for (NSRunningApplication *app in appsFiltered) {
+        NSMutableDictionary *dict = [@{@"title": [app localizedName],
+                                      @"color": [NSColor whiteColor]} mutableCopy];
+        [self.acArrayController addObject:dict];
+        index++;
+    }
+    [self.acArrayController rearrangeObjects];
+    [self.acArrayController setSelectionIndex:appIndex];
+    
+    [self.tvApplications reloadData];
 }
 
 #pragma mark NSDraggingDestination
@@ -309,6 +317,16 @@ BOOL mouseWithin = NO;
     mouseWithin = NO;
     NSLog(@"draggingExited : %@", [sender description]);
     
+}
+
+#pragma mark NSTableViewDataSource
+
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
+    return [appsFiltered count];
+}
+
+- (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
+    return [appsFiltered[row] localizedName];
 }
 
 @end
