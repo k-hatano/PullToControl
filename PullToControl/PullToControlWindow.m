@@ -36,6 +36,7 @@ NSInteger appIndex = 0;
 
 - (void)mouseDown:(NSEvent *)theEvent {
     NSLog(@"mouseDown");
+    [self activateCurrentApp];
     [self.wSubWindow close];
     originalFrame = self.frame;
     mousePressed = YES;
