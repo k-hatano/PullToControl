@@ -45,7 +45,7 @@ NSInteger appIndex = 0;
     NSLog(@"middleClick");
     self.wSubWindow.hidesOnDeactivate = NO;
     [self.wSubWindow makeKeyAndOrderFront:self];
-    [self showNextApp];
+    [self activateCurrentApp];
 }
 
 - (void)mouseUp:(NSEvent *)theEvent {
@@ -131,24 +131,27 @@ NSInteger appIndex = 0;
     if (!mousePressed) {
         [self setBackgroundColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.0]];
         [self.wSubWindow close];
+        
+        [self activateCurrentApp];
     }
 }
 
 - (void)scrollWheel:(NSEvent *)theEvent
 {
+    if (!self.wSubWindow.visible) {
+        self.wSubWindow.hidesOnDeactivate = NO;
+        [self.wSubWindow makeKeyAndOrderFront:self];
+    }
+    
     totalScroll += theEvent.deltaY;
     NSLog(@"%f", totalScroll);
-    if (totalScroll > 12) {
-        self.wSubWindow.hidesOnDeactivate = NO;
-        [self.wSubWindow makeKeyAndOrderFront:self];
+    if (totalScroll > 4) {
         [self showPrevApp];
-        totalScroll -= 12;
+        totalScroll -= 4;
     }
-    if (totalScroll < -12) {
-        self.wSubWindow.hidesOnDeactivate = NO;
-        [self.wSubWindow makeKeyAndOrderFront:self];
+    if (totalScroll < -4) {
         [self showNextApp];
-        totalScroll += 12;
+        totalScroll += 4;
     }
 }
 
@@ -157,6 +160,9 @@ NSInteger appIndex = 0;
     NSAppleScript *as = [ [ NSAppleScript alloc ]
                          initWithSource : @"tell application \"System Events\" to key code {123} using control down" ];
     [ as executeAndReturnError : &asErrDic ];
+    if (asErrDic && [asErrDic count] > 0) {
+        NSLog(@"%@", [asErrDic description]);
+    }
 }
 
 + (void)moveToRightSpace {
@@ -164,6 +170,9 @@ NSInteger appIndex = 0;
     NSAppleScript *as = [ [ NSAppleScript alloc ]
                          initWithSource : @"tell application \"System Events\" to key code {124} using control down" ];
     [ as executeAndReturnError : &asErrDic ];
+    if (asErrDic && [asErrDic count] > 0) {
+        NSLog(@"%@", [asErrDic description]);
+    }
 }
 
 + (void)showMissionControl {
@@ -248,7 +257,7 @@ NSInteger appIndex = 0;
         appIndex = 0;
     }
     
-    [(NSRunningApplication *)[appsFiltered objectAtIndex:appIndex] activateWithOptions:NSApplicationActivateIgnoringOtherApps];
+    // [(NSRunningApplication *)[appsFiltered objectAtIndex:appIndex] activateWithOptions:NSApplicationActivateIgnoringOtherApps];
     [self reloadApplicationsTableView];
 }
 
@@ -259,8 +268,14 @@ NSInteger appIndex = 0;
         appIndex += [appsFiltered count];
     }
     
-    [(NSRunningApplication *)[appsFiltered objectAtIndex:appIndex] activateWithOptions:NSApplicationActivateIgnoringOtherApps];
+    // [(NSRunningApplication *)[appsFiltered objectAtIndex:appIndex] activateWithOptions:NSApplicationActivateIgnoringOtherApps];
     [self reloadApplicationsTableView];
+}
+
+- (void)activateCurrentApp {
+    if (![(NSRunningApplication *)[appsFiltered objectAtIndex:appIndex] isActive]) {
+        [(NSRunningApplication *)[appsFiltered objectAtIndex:appIndex] activateWithOptions:NSApplicationActivateIgnoringOtherApps];
+    }
 }
 
 - (IBAction)fileNameSelected:(id)sender {
@@ -275,7 +290,7 @@ NSInteger appIndex = 0;
     NSInteger index = 0;
     for (NSRunningApplication *app in appsFiltered) {
         NSMutableDictionary *dict = [@{@"title": [app localizedName],
-                                      @"color": [NSColor whiteColor]} mutableCopy];
+                                       @"color": app.isHidden ? [NSColor grayColor] : [NSColor whiteColor]} mutableCopy];
         [self.acArrayController addObject:dict];
         index++;
     }
