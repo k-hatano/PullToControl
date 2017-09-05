@@ -722,10 +722,16 @@
                         <action selector="showMissionControl:" target="Voe-Tx-rLC" id="7wA-su-xBj"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Dashboard" id="deG-s5-2Vg">
+                <menuItem title="Mission Control (App Windows)" id="rEY-jN-UJW">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="showDashboard:" target="Voe-Tx-rLC" id="GN5-YV-K6l"/>
+                        <action selector="showApplicationWidows:" target="Voe-Tx-rLC" id="Q1g-6X-Wa8"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Mission Control (Desktop)" id="4Gx-II-uGG">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="showDesktop:" target="Voe-Tx-rLC" id="Y8V-bT-tyd"/>
                     </connections>
                 </menuItem>
                 <menuItem title="Launchpad" id="MUX-x5-PdQ">
@@ -734,17 +740,10 @@
                         <action selector="showLaunchpad:" target="Voe-Tx-rLC" id="enm-cH-ywD"/>
                     </connections>
                 </menuItem>
-                <menuItem isSeparatorItem="YES" id="k7x-KW-Dg7"/>
-                <menuItem title="Show Application Windows" id="rEY-jN-UJW">
+                <menuItem title="Dashboard" id="deG-s5-2Vg">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="showApplicationWidows:" target="Voe-Tx-rLC" id="Q1g-6X-Wa8"/>
-                    </connections>
-                </menuItem>
-                <menuItem title="Show Desktop" id="4Gx-II-uGG">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <connections>
-                        <action selector="showDesktop:" target="Voe-Tx-rLC" id="Y8V-bT-tyd"/>
+                        <action selector="showDashboard:" target="Voe-Tx-rLC" id="GN5-YV-K6l"/>
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="YaA-3a-hB7"/>
@@ -814,11 +813,11 @@
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.49666030534351147" colorSpace="calibratedRGB"/>
                         </clipView>
                         <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="Y9x-i7-5bj">
-                            <rect key="frame" x="-100" y="-100" width="223" height="15"/>
+                            <rect key="frame" x="0.0" y="-16" width="0.0" height="16"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="EB7-lZ-euk">
-                            <rect key="frame" x="-15" y="0.0" width="15" height="0.0"/>
+                            <rect key="frame" x="-16" y="0.0" width="16" height="0.0"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
