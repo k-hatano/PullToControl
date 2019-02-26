@@ -17,6 +17,7 @@ BOOL mousePressed = NO;
 CGFloat totalScroll = 0.0f;
 NSMutableArray *appsFiltered;
 NSInteger appIndex = 0;
+NSTimer *appShowingTimer = nil;
 
 - (void)awakeFromNib {
     self.wSubWindow.level = NSPopUpMenuWindowLevel;
@@ -124,6 +125,9 @@ NSInteger appIndex = 0;
     [self searchCurrentIndex];
     if (!mousePressed) {
         [self setBackgroundColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.5]];
+        if (!appShowingTimer) {
+            appShowingTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(showAppNames:) userInfo:nil repeats:NO];
+        }
     }
 }
 
@@ -134,6 +138,10 @@ NSInteger appIndex = 0;
         [self.wSubWindow close];
         
         [self activateCurrentApp];
+        if (appShowingTimer && [appShowingTimer isValid]) {
+            [appShowingTimer invalidate];
+            appShowingTimer = nil;
+        }
     }
 }
 
@@ -148,11 +156,11 @@ NSInteger appIndex = 0;
     NSLog(@"%f", totalScroll);
     if (totalScroll > 4) {
         [self showPrevApp];
-        totalScroll -= 4;
+        totalScroll = 0;
     }
     if (totalScroll < -4) {
         [self showNextApp];
-        totalScroll += 4;
+        totalScroll = 0;
     }
 }
 
@@ -271,6 +279,12 @@ NSInteger appIndex = 0;
     
     // [(NSRunningApplication *)[appsFiltered objectAtIndex:appIndex] activateWithOptions:NSApplicationActivateIgnoringOtherApps];
     [self reloadApplicationsTableView];
+}
+
+- (void)showAppNames:(NSTimer *)timer {
+    self.wSubWindow.hidesOnDeactivate = NO;
+    [self.wSubWindow makeKeyAndOrderFront:self];
+    appShowingTimer = nil;
 }
 
 - (void)activateCurrentApp {
