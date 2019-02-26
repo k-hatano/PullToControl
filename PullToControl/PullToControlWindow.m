@@ -41,6 +41,10 @@ NSTimer *appShowingTimer = nil;
     [self.wSubWindow close];
     originalFrame = self.frame;
     mousePressed = YES;
+    if (appShowingTimer && [appShowingTimer isValid]) {
+        [appShowingTimer invalidate];
+        appShowingTimer = nil;
+    }
 }
 
 - (void)otherMouseDown:(NSEvent *)theEvent {
@@ -115,6 +119,11 @@ NSTimer *appShowingTimer = nil;
         self.lLabel.stringValue = @"Mission Control";
     } else {
         self.lLabel.stringValue = @"";
+    }
+    
+    if (appShowingTimer && [appShowingTimer isValid]) {
+        [appShowingTimer invalidate];
+        appShowingTimer = nil;
     }
     
     NSLog(@"mouseDragged");
