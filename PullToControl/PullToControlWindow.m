@@ -50,8 +50,14 @@ NSTimer *appShowingTimer = nil;
 - (void)otherMouseDown:(NSEvent *)theEvent {
     NSLog(@"middleClick");
     self.wSubWindow.hidesOnDeactivate = NO;
-    [self.wSubWindow makeKeyAndOrderFront:self];
-    [self activateCurrentApp];
+    if ([(NSRunningApplication *)[appsFiltered objectAtIndex:appIndex] isActive]) {
+        [[appsFiltered objectAtIndex:appIndex] hide];
+        
+        [self.tvApplications reloadData];
+    } else {
+        [self.wSubWindow makeKeyAndOrderFront:self];
+        [self activateCurrentApp];
+    }
 }
 
 - (void)mouseUp:(NSEvent *)theEvent {
@@ -108,9 +114,9 @@ NSTimer *appShowingTimer = nil;
     if (y < 4) {
         self.lLabel.stringValue = @"Sleep";
     } else if (x < 0) {
-        self.lLabel.stringValue = @"Right space";
+        self.lLabel.stringValue = @"Right Space";
     } else if (x > 128) {
-        self.lLabel.stringValue = @"Left space";
+        self.lLabel.stringValue = @"Left Space";
     } else if (y < displayHeight / 3) {
         self.lLabel.stringValue = @"Dashboard";
     } else if (y < displayHeight * 2 / 3) {
